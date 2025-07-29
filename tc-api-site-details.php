@@ -132,7 +132,7 @@ class ApiSiteDetails
 
     }
 
-    //If Activate Plugin TC Static Site
+    //If Activate Plugin Hb Waf
     private function isHbWafPluginActive() {
 
         if ( ! function_exists( 'is_plugin_active' ) ) {
@@ -216,12 +216,7 @@ class ApiSiteDetails
         ];
     }
 
-
-
-
-
-
 }
 
-$auth = new ApiSiteDetails();
-$auth->init();
+$api = new ApiSiteDetails();
+$api->init();
