@@ -3,8 +3,8 @@
 /**
  * Plugin Name: TC Api Site Details
  * Description: Информация о сайте
- * Version: 1.0.0
- * Author: Traffic Connect
+ * Version: 1.0.1
+ * Author: TrafficConnect
  */
 
 defined('ABSPATH') || exit;
