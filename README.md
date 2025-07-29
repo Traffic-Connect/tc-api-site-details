@@ -39,11 +39,37 @@
                 etc...
             }
         ],
-        "theme": { //Активная тема на сайте
-            "name": "Название темы",
-            "version": "Версия темы"
+        "themes": { //Темы
+            "active": { //Активная тема
+                "name": "Название темы",
+                "version": "Версия"
+            },
+            "all": [ //Все темы
+                {
+                    "name": "Название темы",
+                    "version": "Версия",
+                    "status": "Статус true/false"
+                },
+                {
+                    etc...
+                }
+            ]
         },
-        "is_static_site_plugin_active": "Включен ли плагин TC Static Site? true/false",
+        "is_static_site_plugin_active": { //Включен ли плагин TC Static Site?
+            "status": true, //Статус плагина
+            "options": "Опции плагина",
+            "files": [ //html файлы
+                "404.html",
+                "app.html",
+                "betonred.html",
+                "game.html",
+                "index.html",
+                "lobby.html",
+                "promo.html",
+                "sport.html",
+                "test.html"
+            ]
+        },
         "is_hb_waf_plugin_active": { //Включен ли плагин TC WAF и список его параметров
             "status": true,
             "options": {

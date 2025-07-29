@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: TC Api Site Details
  * Description: Информация о сайте
@@ -11,11 +12,12 @@ defined('ABSPATH') || exit;
 class ApiSiteDetails
 {
 
-    private $allowedIP = '104.248.205.174';
+    private $allowedIP = '192.168.65.1';
+    //private $allowedIP = '49.13.3.52';
 
     public function __construct()
     {
-        //
+
     }
 
     public function init()
@@ -61,13 +63,18 @@ class ApiSiteDetails
             'server_php' => $this->getServerVersionPHP(),
             'plugins' => $this->getAllPluginsInfo(),
             'users' => $this->getAllUsers(),
-            'theme' => $this->getActiveTheme(),
+            'themes' => [
+                'active' => $this->getActiveTheme(),
+                'all' => $this->getAllThemes()
+            ],
             'is_static_site_plugin_active' => $this->isStaticSitePluginActive(),
             'is_hb_waf_plugin_active' => $this->isHbWafPluginActive(),
             'is_pretty_links_plugin_active' => $this->getPrettyLinksPlugin(),
         ]);
 
     }
+
+    //
 
     //Get Server IP
     private function getServerIP()
@@ -128,11 +135,31 @@ class ApiSiteDetails
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
 
-        return is_plugin_active( 'tc-static-site/tc-static-site.php' ) ? true : false;
+        if(is_plugin_active( 'tc-static-site/tc-static-site.php' ))
+        {
+
+            $files = glob( WP_CONTENT_DIR . '/cache/' . TC_STATIC_SITE_DIR . '/*.html' );
+            $data = [];
+            if ( !empty( $files ) ) {
+                foreach ( $files as $file )
+                {
+                    $filename = basename( $file );
+                    $data[] = $filename;
+                }
+            }
+
+            return [
+                'status' => true,
+                'options' => get_option('tc-static-site-settings'),
+                'files' => $data
+            ];
+        }
+
+        return false;
 
     }
 
-    //If Activate Plugin Hb Waf
+    //If Activate Plugin TC Static Site
     private function isHbWafPluginActive() {
 
         if ( ! function_exists( 'is_plugin_active' ) ) {
@@ -150,7 +177,7 @@ class ApiSiteDetails
             ];
         }
 
-       return false;
+        return false;
 
     }
 
@@ -179,6 +206,22 @@ class ApiSiteDetails
             'version' => $theme->get('Version'),
         ];
 
+    }
+
+    private function getAllThemes()
+    {
+        $themes = wp_get_themes();
+        $themes_list = [];
+
+        foreach ($themes as $stylesheet => $theme) {
+            $themes_list[] = [
+                'name'       => $theme->get('Name'),
+                'version'    => $theme->get('Version'),
+                'status'     => (wp_get_theme()->get_stylesheet() === $stylesheet) ? true : false
+            ];
+        }
+
+        return $themes_list;
     }
 
     private function getPrettyLinksPlugin() {
@@ -216,7 +259,12 @@ class ApiSiteDetails
         ];
     }
 
+
+
+
+
+
 }
 
-$api = new ApiSiteDetails();
-$api->init();
+$auth = new ApiSiteDetails();
+$auth->init();
