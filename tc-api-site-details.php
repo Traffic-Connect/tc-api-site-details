@@ -13,8 +13,8 @@ defined('ABSPATH') || exit;
 class ApiSiteDetails
 {
 
-    private $allowedIP = '192.168.65.1';
-    //private $allowedIP = '49.13.3.52';
+    private $allowedIP = '';
+
 
     public function __construct()
     {
