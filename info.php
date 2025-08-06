@@ -1,8 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-$allowed_ip = '192.168.65.1';
-//$allowed_ip = '49.13.3.52';
+$allowed_ip = '';
 
 $client_ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ??
     $_SERVER['HTTP_X_FORWARDED_FOR'] ??
