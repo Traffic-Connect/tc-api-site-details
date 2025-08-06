@@ -1,4 +1,4 @@
-## must-use плагин TC Api Site Details
+## Wordpress must-use плагин TC Api Site Details
 
 ## Документация
 
@@ -86,6 +86,44 @@
         "is_pretty_links_plugin_active": { //В случае автивации плагина Pretty Links список всех ссылок
             "status": true,
             "links": []
+        }
+    }
+}
+```
+
+## Static TC Api Site Details Static
+
+## Документация
+
+#### Плагин отдает информацию о сайте
+
+```
+Роут: https://example.com/info.php
+```
+
+### Переменные
+
+**$allowed_ip** - IP сервера с которого будут разрешены запросы
+
+### Ответ
+
+```yaml
+{
+    "success": true,
+    "data": {
+        "server_ip": "IP текущего сервера",
+        "server_info": "Информация о текущем веб сервере (nginx или apache)",
+        "server_php": "Версия php",
+        "is_hb_waf_plugin_active": { //Включен ли плагин TC WAF и список его параметров
+            "status": true,
+            "options": {
+                "general": {
+                    //Основные опции
+                },
+                "other": {
+                   //Дополнительные опции
+                }
+            }
         }
     }
 }
