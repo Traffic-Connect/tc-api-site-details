@@ -9,11 +9,7 @@ $client_ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ??
 
 if ($client_ip !== $allowed_ip)
 {
-    http_response_code(403);
-    echo json_encode([
-        'success' => false,
-        'message' => 'Error: Access denied'
-    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    http_response_code(404);
     exit;
 }
 
