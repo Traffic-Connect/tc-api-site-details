@@ -1,6 +1,7 @@
 <?php
 
 /**
+ *
  * Plugin Name: TC Api Site Details
  * Description: Информация о сайте с поддержкой мультисайтов
  * Version: 1.0.2
