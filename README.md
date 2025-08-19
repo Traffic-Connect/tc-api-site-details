@@ -1,5 +1,7 @@
 ## Wordpress must-use плагин TC Api Site Details
 
+Setup script https://github.com/Traffic-Connect/script-tc-api-site-details
+
 ## Документация
 
 #### Плагин отдает информацию о сайте
