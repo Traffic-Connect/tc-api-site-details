@@ -420,7 +420,7 @@ class ApiSiteDetails
             }
 
             if ($enabled && !empty($slug)) {
-                $login_url = home_url('/' . ltrim($slug, '/') . '/');
+                $login_url = home_url(sprintf('/wp-login.php?itsec-hb-token=%s' , $slug));
             }
 
         }
