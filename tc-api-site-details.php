@@ -4,7 +4,7 @@
  *
  * Plugin Name: TC Api Site Details
  * Description: Информация о сайте с поддержкой мультисайтов
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: TrafficConnect
  * Network: true
  */
@@ -72,6 +72,7 @@ class ApiSiteDetails
             'is_static_site_plugin_active' => $this->isStaticSitePluginActive(),
             'is_hb_waf_plugin_active' => $this->isHbWafPluginActive(),
             'is_pretty_links_plugin_active' => $this->getPrettyLinksPlugin(),
+            'admin_url' => $this->getAdminURL(),
         ];
 
         if (is_multisite()) {
@@ -385,6 +386,46 @@ class ApiSiteDetails
             'status' => true,
             'links' => $links,
         ];
+    }
+
+    private function getAdminURL()
+    {
+
+        $login_url = home_url('/wp-admin/');
+
+        if (!function_exists('is_plugin_active')) {
+            include_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
+        if (is_plugin_active('solid-security/solid-security.php')
+            || is_plugin_active('better-wp-security/better-wp-security.php')) {
+
+            // New Version Solid Security
+            $data = get_option('itsec-storage');
+            $slug = '';
+            $enabled = false;
+
+            if (is_array($data) && !empty($data['hide-backend'])) {
+                $slug    = $data['hide-backend']['slug'] ?? '';
+                $enabled = !empty($data['hide-backend']['enabled']);
+            }
+
+            // Old Version iThemes Security
+            if (!$slug || !$enabled) {
+                $data = get_option('itsec_hide_backend');
+                if (is_array($data)) {
+                    $slug    = $data['slug'] ?? '';
+                    $enabled = !empty($data['enabled']);
+                }
+            }
+
+            if ($enabled && !empty($slug)) {
+                $login_url = home_url(sprintf('/wp-login.php?itsec-hb-token=%s' , $slug));
+            }
+
+        }
+
+        return $login_url;
     }
 }
 
