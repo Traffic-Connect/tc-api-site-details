@@ -1,13 +1,18 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-$allowed_ip = '';
+/**
+ * Список разрешенных IP адресов для доступа к API
+ * Пример: $allowed_ips = ['192.168.1.1', '192.168.1.2', '10.0.0.1'];
+ */
+$allowed_ips = [];
 
 $client_ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ??
     $_SERVER['HTTP_X_FORWARDED_FOR'] ??
     $_SERVER['REMOTE_ADDR'];
 
-if ($client_ip !== $allowed_ip)
+// Если массив разрешенных IP пуст или клиентский IP не в списке - запрещаем доступ
+if (empty($allowed_ips) || !in_array($client_ip, $allowed_ips, true))
 {
     http_response_code(404);
     exit;

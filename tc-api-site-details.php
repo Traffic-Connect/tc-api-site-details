@@ -4,7 +4,7 @@
  *
  * Plugin Name: TC Api Site Details
  * Description: Информация о сайте с поддержкой мультисайтов
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: TrafficConnect
  * Network: true
  */
@@ -13,8 +13,11 @@ defined('ABSPATH') || exit;
 
 class ApiSiteDetails
 {
-
-    private $allowedIP = '';
+    /**
+     * Список разрешенных IP адресов для доступа к API
+     * Пример: private $allowedIPs = ['192.168.1.1', '192.168.1.2', '10.0.0.1'];
+     */
+    private $allowedIPs = [];
 
     public function __construct()
     {
@@ -38,13 +41,27 @@ class ApiSiteDetails
 
     public function check_permission()
     {
-        $allowed_ip = $this->allowedIP;
+        $allowed_ips = $this->allowedIPs;
+
+        // Если массив разрешенных IP пуст, доступ запрещен
+        if (empty($allowed_ips)) {
+            return new WP_Error(
+                'forbidden',
+                'Доступ запрещён',
+                [
+                    'status' => 403
+                ]
+            );
+        }
 
         $client_ip = $_SERVER['HTTP_CF_CONNECTING_IP'] ??
             $_SERVER['HTTP_X_FORWARDED_FOR'] ??
             $_SERVER['REMOTE_ADDR'];
 
-        if ($client_ip === $allowed_ip) return true;
+        // Проверяем, находится ли IP клиента в списке разрешенных
+        if (in_array($client_ip, $allowed_ips, true)) {
+            return true;
+        }
 
         return new WP_Error(
             'forbidden',
